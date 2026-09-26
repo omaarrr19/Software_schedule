@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جداول محاضرات ومعامل قسم السوفت وير - الفرقة الثالثة</title>
+  <style>
+    :root {
+      --primary: #1a365d;
+      --secondary: #2b6cb0;
+      --accent: #3182ce;
+      --bg: #f0f4f8;
+      --card-bg: #ffffff;
+      --lab-bg: #e6fffa;
+      --lab-color: #234e52;
+      --lab-border: #81e6d9;
+      --lec-bg: #ebf8ff;
+      --lec-color: #2b6cb0;
+      --lec-border: #bee3f8;
+      --muted: #a0aec0;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: #2d3748;
+      padding: 24px 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      padding: 30px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 26px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #718096;
+      font-size: 15px;
+    }
+
+    /* Tabs Bar */
+    .tabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .tab-btn {
+      background: #edf2f7;
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #4a5568;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .tab-btn.active {
+      background: var(--secondary);
+      color: #fff;
+      border-color: var(--secondary);
+      box-shadow: 0 4px 12px rgba(43, 108, 176, 0.3);
+    }
+
+    /* Group Content */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .week-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--secondary);
+      font-size: 18px;
+      margin: 25px 0 12px;
+      border-right: 4px solid var(--accent);
+      padding-right: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: center;
+      font-size: 13.5px;
+    }
+
+    th {
+      background: #edf2f7;
+      color: #1a202c;
+      font-weight: 700;
+    }
+
+    .lab-cell {
+      background: var(--lab-bg);
+      color: var(--lab-color);
+      font-weight: bold;
+      border: 1px solid var(--lab-border);
+    }
+
+    .lec-cell {
+      background: var(--lec-bg);
+      color: var(--lec-color);
+    }
+
+    .off-cell {
+      background: #fafafa;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* Notes Box */
+    .notes-card {
+      background: #fffaf0;
+      border-right: 4px solid #dd6b20;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    .notes-card h4 {
+      color: #9c4221;
+      margin-bottom: 6px;
+    }
+
+    .notes-card ul {
+      margin-right: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>جدول المحاضرات والمعامل — تخصص تكنولوجيا البرمجيات</h1>
+    <p>الفرقة الثالثة | نظام الحضور الدوري للمختبرات (مرة كل أسبوعين)</p>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="openTab('tab-g3')">المجموعة 3 (G3)</button>
+    <button class="tab-btn" onclick="openTab('tab-g1')">المجموعة 1 (G1)</button>
+    <button class="tab-btn" onclick="openTab('tab-g2')">المجموعة 2 (G2)</button>
+    <button class="tab-btn" onclick="openTab('tab-g4')">المجموعة 4 (G4)</button>
+    <button class="tab-btn" onclick="openTab('tab-all')">الجدول الشامل للكل</button>
+  </div>
+
+  <!-- GROUP 3 TAB -->
+  <div id="tab-g3" class="tab-content active">
+    <h3 class="week-title">الأسبوع الأول (Week 1)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الوقت</th>
+          <th>المادة / النشاط</th>
+          <th>المكان</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Java Programming II</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lab-cell">معمل Java Programming II Lab</td>
+          <td>Computer Lab 1 (مبنى ب)</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Data Communication</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td rowspan="3">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Advanced Pro in C</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Microprocessor</td>
+          <td>W11</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Computer Graphics</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>الخميس</td>
+          <td colspan="3" class="off-cell">إجازة (لا توجد محاضرات سوفت وير أو معامل لـ G3 هذا الأسبوع)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="week-title">الأسبوع الثاني (Week 2)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الوقت</th>
+          <th>المادة / النشاط</th>
+          <th>المكان</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="2">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Java Programming II</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Data Communication</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td rowspan="4">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Advanced Pro in C</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lab-cell">معمل Microprocessor Lab (حضور المحاضرة مع شبكات)</td>
+          <td>Computer Lab 2 (مبنى ب)</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Computer Graphics</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>03:00 - 04:30</td>
+          <td class="lab-cell">معمل Advanced Pro in C Lab</td>
+          <td>Computer Lab 1 (مبنى ب)</td>
+        </tr>
+        <tr>
+          <td>الخميس</td>
+          <td>10:30 - 12:00</td>
+          <td class="lab-cell">معمل Computer Graphics Lab</td>
+          <td>Computer Lab 2 (مبنى ب)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GROUP 1 TAB -->
+  <div id="tab-g1" class="tab-content">
+    <h3 class="week-title">الأسبوع الأول (Week 1)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الوقت</th>
+          <th>المادة / النشاط</th>
+          <th>المكان</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lab-cell">معمل Java Programming II Lab</td>
+          <td>Computer Lab 1</td>
+        </tr>
+        <tr>
+          <td>10:30 - 12:00</td>
+          <td class="lec-cell">محاضرة Java Programming II</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Data Communication</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td rowspan="4">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Advanced Pro in C</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Microprocessor</td>
+          <td>W11</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Computer Graphics</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>03:00 - 04:30</td>
+          <td class="lab-cell">معمل Advanced Pro in C Lab</td>
+          <td>Computer Lab 1</td>
+        </tr>
+        <tr>
+          <td>الخميس</td>
+          <td>10:30 - 12:00</td>
+          <td class="lab-cell">معمل Computer Graphics Lab</td>
+          <td>Computer Lab 2</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="week-title">الأسبوع الثاني (Week 2)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الوقت</th>
+          <th>المادة / النشاط</th>
+          <th>المكان</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Java Programming II</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>10:30 - 12:00</td>
+          <td class="lab-cell">معمل Microprocessor Lab</td>
+          <td>Computer Lab 2</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Data Communication</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td rowspan="3">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Advanced Pro in C</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Microprocessor</td>
+          <td>W11</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Computer Graphics</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>الخميس</td>
+          <td colspan="3" class="off-cell">إجازة (لا توجد محاضرات سوفت وير أو معامل لـ G1 هذا الأسبوع)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GROUP 2 TAB -->
+  <div id="tab-g2" class="tab-content">
+    <h3 class="week-title">الأسبوع الأول (Week 1)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الوقت</th>
+          <th>المادة / النشاط</th>
+          <th>المكان</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lab-cell">معمل Java Programming II Lab</td>
+          <td>Computer Lab 1</td>
+        </tr>
+        <tr>
+          <td>10:30 - 12:00</td>
+          <td class="lec-cell">محاضرة Java Programming II</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Data Communication</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td rowspan="3">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Advanced Pro in C</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Microprocessor</td>
+          <td>W11</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Computer Graphics</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td rowspan="2">الخميس</td>
+          <td>10:30 - 12:00</td>
+          <td class="lab-cell">معمل Advanced Pro in C Lab</td>
+          <td>Computer Lab 1</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lab-cell">معمل Computer Graphics Lab</td>
+          <td>Computer Lab 2</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="week-title">الأسبوع الثاني (Week 2)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الوقت</th>
+          <th>المادة / النشاط</th>
+          <th>المكان</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Java Programming II</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>10:30 - 12:00</td>
+          <td class="lab-cell">معمل Microprocessor Lab</td>
+          <td>Computer Lab 2</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Data Communication</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td rowspan="3">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Advanced Pro in C</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Microprocessor</td>
+          <td>W11</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Computer Graphics</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>الخميس</td>
+          <td colspan="3" class="off-cell">إجازة (لا توجد محاضرات سوفت وير أو معامل لـ G2 هذا الأسبوع)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GROUP 4 TAB -->
+  <div id="tab-g4" class="tab-content">
+    <h3 class="week-title">الأسبوع الأول (Week 1)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الوقت</th>
+          <th>المادة / النشاط</th>
+          <th>المكان</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Java Programming II</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Data Communication</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lab-cell">معمل Java Programming II Lab</td>
+          <td>Computer Lab 1</td>
+        </tr>
+        <tr>
+          <td rowspan="3">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Advanced Pro in C</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Microprocessor</td>
+          <td>W11</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Computer Graphics</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>الخميس</td>
+          <td colspan="3" class="off-cell">إجازة (لا توجد محاضرات سوفت وير أو معامل لـ G4 هذا الأسبوع)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="week-title">الأسبوع الثاني (Week 2)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th>الوقت</th>
+          <th>المادة / النشاط</th>
+          <th>المكان</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="2">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Java Programming II</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Data Communication</td>
+          <td>H1B</td>
+        </tr>
+        <tr>
+          <td rowspan="3">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td class="lec-cell">محاضرة Advanced Pro in C</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lec-cell">محاضرة Microprocessor</td>
+          <td>W11</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lec-cell">محاضرة Computer Graphics</td>
+          <td>H2B</td>
+        </tr>
+        <tr>
+          <td rowspan="3">الخميس</td>
+          <td>10:30 - 12:00</td>
+          <td class="lab-cell">معمل Advanced Pro in C Lab</td>
+          <td>Computer Lab 1</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="lab-cell">معمل Microprocessor Lab</td>
+          <td>Computer Lab 3 (مبنى الورش)</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="lab-cell">معمل Computer Graphics Lab</td>
+          <td>Computer Lab 2</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ALL GROUPS TAB -->
+  <div id="tab-all" class="tab-content">
+    <h3 class="week-title">الأسبوع الأول (Week 1) — الجدول المقارن الكامل</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 10%;">اليوم</th>
+          <th style="width: 14%;">الوقت</th>
+          <th style="width: 19%;">Group 1 (G1)</th>
+          <th style="width: 19%;">Group 2 (G2)</th>
+          <th style="width: 19%;">Group 3 (G3)</th>
+          <th style="width: 19%;">Group 4 (G4)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="4">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td colspan="2" class="lab-cell">معمل Java Lab (Lab 1)</td>
+          <td colspan="2" class="lec-cell">محاضرة Java (H1B)</td>
+        </tr>
+        <tr>
+          <td>10:30 - 12:00</td>
+          <td colspan="2" class="lec-cell">محاضرة Java (H1B)</td>
+          <td colspan="2" class="off-cell">استراحة</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td colspan="2" class="off-cell">استراحة</td>
+          <td class="lab-cell">معمل Java (Lab 1)</td>
+          <td class="lec-cell">محاضرة Data Comm (H1B)</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td colspan="3" class="lec-cell">محاضرة Data Comm (H1B)</td>
+          <td class="lab-cell">معمل Java (Lab 1)</td>
+        </tr>
+
+        <tr>
+          <td rowspan="4">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td colspan="4" class="lec-cell">محاضرة Advanced Programming in C (H2B)</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td colspan="4" class="lec-cell">محاضرة Microprocessor (W11)</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td colspan="4" class="lec-cell">محاضرة Computer Graphics (H2B)</td>
+        </tr>
+        <tr>
+          <td>03:00 - 04:30</td>
+          <td class="lab-cell">معمل Adv. C (Lab 1)</td>
+          <td colspan="3" class="off-cell">انتهاء اليوم الدراسي</td>
+        </tr>
+
+        <tr>
+          <td rowspan="2">الخميس</td>
+          <td>10:30 - 12:00</td>
+          <td class="lab-cell">معمل Graphics (Lab 2)</td>
+          <td class="lab-cell">معمل Adv. C (Lab 1)</td>
+          <td class="off-cell" rowspan="2">إجازة لـ G3</td>
+          <td class="off-cell" rowspan="2">إجازة لـ G4</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="off-cell">—</td>
+          <td class="lab-cell">معمل Graphics (Lab 2)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="week-title">الأسبوع الثاني (Week 2) — الجدول المقارن الكامل</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 10%;">اليوم</th>
+          <th style="width: 14%;">الوقت</th>
+          <th style="width: 19%;">Group 1 (G1)</th>
+          <th style="width: 19%;">Group 2 (G2)</th>
+          <th style="width: 19%;">Group 3 (G3)</th>
+          <th style="width: 19%;">Group 4 (G4)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3">الثلاثاء</td>
+          <td>09:00 - 10:30</td>
+          <td colspan="4" class="lec-cell">محاضرة Java Programming II (H1B)</td>
+        </tr>
+        <tr>
+          <td>10:30 - 12:00</td>
+          <td colspan="2" class="lab-cell">معمل Microprocessor (Lab 2)</td>
+          <td colspan="2" class="off-cell">استراحة</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td colspan="4" class="lec-cell">محاضرة Data Communication (H1B)</td>
+        </tr>
+
+        <tr>
+          <td rowspan="4">الأربعاء</td>
+          <td>09:00 - 10:30</td>
+          <td colspan="4" class="lec-cell">محاضرة Advanced Programming in C (H2B)</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td colspan="2" class="lec-cell">محاضرة Microprocessor (W11)</td>
+          <td class="lab-cell">معمل Micro (Lab 2)</td>
+          <td class="lec-cell">محاضرة Micro (W11)</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td colspan="4" class="lec-cell">محاضرة Computer Graphics (H2B)</td>
+        </tr>
+        <tr>
+          <td>03:00 - 04:30</td>
+          <td colspan="2" class="off-cell">انتهاء اليوم الدراسي</td>
+          <td class="lab-cell">معمل Adv. C (Lab 1)</td>
+          <td class="off-cell">انتهاء اليوم</td>
+        </tr>
+
+        <tr>
+          <td rowspan="3">الخميس</td>
+          <td>10:30 - 12:00</td>
+          <td class="off-cell" rowspan="3">إجازة لـ G1</td>
+          <td class="off-cell" rowspan="3">إجازة لـ G2</td>
+          <td class="lab-cell">معمل Graphics (Lab 2)</td>
+          <td class="lab-cell">معمل Adv. C (Lab 1)</td>
+        </tr>
+        <tr>
+          <td>12:00 - 01:30</td>
+          <td class="off-cell">—</td>
+          <td class="lab-cell">معمل Micro (Lab 3)</td>
+        </tr>
+        <tr>
+          <td>01:30 - 03:00</td>
+          <td class="off-cell">—</td>
+          <td class="lab-cell">معمل Graphics (Lab 2)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Notes & Lab Locations -->
+  <div class="notes-card">
+    <h4>دليل الأماكن والملاحظات الأكاديمية:</h4>
+    <ul>
+      <li><strong>أماكن المختبرات (Computer Labs):</strong> Lab 1 و Lab 2 بالدور الأول في مبنى (ب) — Lab 3 و Lab 4 بالدور الأول في مبنى الورش.</li>
+      <li><strong>مرونة المحاضرات المشتركة:</strong> مسموح بالتنقل بين فترات المحاضرات المشتركة لتفادي أي تعارض مع مواعيد المعامل المحددة لكل مجموعة.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  function openTab(tabId) {
+    const tabs = document.querySelectorAll('.tab-content');
+    const buttons = document.querySelectorAll('.tab-btn');
+
+    tabs.forEach(tab => tab.classList.remove('active'));
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
